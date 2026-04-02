@@ -36,7 +36,6 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001',
   'http://localhost:4174',
-  'https://dataworks-platform.vercel.app',
   'https://dataworks-platform.onrender.com'
 ];
 
@@ -45,7 +44,11 @@ app.use(cors({
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (
+      allowedOrigins.includes(origin) ||
+      origin.includes('vercel.app') ||  // allow all vercel deployments
+      origin.includes('localhost')      // allow all localhost ports
+    ) {
       callback(null, true);
     } else {
       console.log('CORS blocked origin:', origin);
@@ -60,7 +63,10 @@ app.use(cors({
 // Handle preflight requests
 app.options('*', (req, res) => {
   const origin = req.headers.origin;
-  if (!origin || allowedOrigins.includes(origin)) {
+  if (!origin ||
+      allowedOrigins.includes(origin) ||
+      origin.includes('vercel.app') ||
+      origin.includes('localhost')) {
     res.header('Access-Control-Allow-Origin', origin || '*');
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
