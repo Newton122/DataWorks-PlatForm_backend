@@ -26,13 +26,16 @@ const server = http.createServer(app);
 // Socket.io setup
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL || ['http://localhost:3000', 'http://localhost:3001'],
+    origin: process.env.CLIENT_URL || "*",
     methods: ['GET', 'POST'],
   },
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_URL || "*",
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -64,7 +67,7 @@ mongoose
     console.log('Connected to MongoDB');
     
     // Start server
-    const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
     server.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });

@@ -196,10 +196,9 @@ exports.getUsersForMessaging = async (req, res) => {
     let users;
     
     if (userRole === 'client') {
-      // Clients can message freelancers and admin
+      // Clients can message all users except themselves
       users = await User.find({
-        _id: { $ne: userId },
-        role: { $in: ['freelancer', 'admin'] }
+        _id: { $ne: userId }
       }).select('name email role avatar');
     } else if (userRole === 'freelancer') {
       // Freelancers can message clients they've applied to jobs for, and admin
