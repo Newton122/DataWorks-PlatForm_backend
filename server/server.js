@@ -44,16 +44,8 @@ app.use(cors({
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
 
-    if (
-      allowedOrigins.includes(origin) ||
-      origin.includes('vercel.app') ||  // allow all vercel deployments
-      origin.includes('localhost')      // allow all localhost ports
-    ) {
-      callback(null, true);
-    } else {
-      console.log('CORS blocked origin:', origin);
-      callback(new Error('Not allowed by CORS'));
-    }
+    // Temporarily allow all origins for testing
+    callback(null, true);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -63,18 +55,12 @@ app.use(cors({
 // Handle preflight requests
 app.options('*', (req, res) => {
   const origin = req.headers.origin;
-  if (!origin ||
-      allowedOrigins.includes(origin) ||
-      origin.includes('vercel.app') ||
-      origin.includes('localhost')) {
-    res.header('Access-Control-Allow-Origin', origin || '*');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-    res.sendStatus(200);
-  } else {
-    res.sendStatus(403);
-  }
+  // Temporarily allow all origins
+  res.header('Access-Control-Allow-Origin', origin || '*');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  res.sendStatus(200);
 });
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
