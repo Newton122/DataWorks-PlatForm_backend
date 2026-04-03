@@ -14,7 +14,7 @@ router.get('/internships', jobController.getInternshipJobs);
 
 // Public routes
 router.get('/', jobController.getJobs);
-router.post('/', jobController.createJob); // Temporarily removed auth for seeding
+router.post('/', authMiddleware, jobController.createJob);
 
 // Parameterized routes (MUST be last)
 router.get('/:id', jobController.getJob);

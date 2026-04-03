@@ -72,8 +72,8 @@ const jobSchema = new mongoose.Schema({
   }],
   postedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-    // required: true - temporarily removed for seeding
+    ref: 'User',
+    required: true
   },
   status: {
     type: String,

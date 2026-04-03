@@ -115,7 +115,7 @@ exports.createJob = async (req, res) => {
       description,
       requirements,
       skills,
-      postedBy: req.user ? req.user._id : null // Allow null for seeding
+      postedBy: req.user._id
     });
 
     await job.save();
