@@ -38,7 +38,12 @@ const getMe = async (req, res) => {
       title: user.title || '',
       rating: user.rating || 0,
       totalEarnings: user.totalEarnings || 0,
-      jobsCompleted: user.jobsCompleted || 0
+      jobsCompleted: user.jobsCompleted || 0,
+      experience: user.experience || '',
+      education: user.education || '',
+      linkedin: user.linkedin || '',
+      github: user.github || '',
+      portfolio: user.portfolio || ''
     };
     
     console.log('✅ Returning user data');
@@ -52,7 +57,7 @@ const getMe = async (req, res) => {
 // Update user profile
 const updateProfile = async (req, res) => {
   try {
-    const { name, email, phone, location, bio, skills, hourlyRate, title } = req.body;
+    const { name, email, phone, location, bio, skills, hourlyRate, title, experience, education, linkedin, github, portfolio } = req.body;
     
     const updateData = {};
     if (name) updateData.name = name;
@@ -63,6 +68,11 @@ const updateProfile = async (req, res) => {
     if (skills) updateData.skills = skills;
     if (hourlyRate !== undefined) updateData.hourlyRate = hourlyRate;
     if (title !== undefined) updateData.title = title;
+    if (experience !== undefined) updateData.experience = experience;
+    if (education !== undefined) updateData.education = education;
+    if (linkedin !== undefined) updateData.linkedin = linkedin;
+    if (github !== undefined) updateData.github = github;
+    if (portfolio !== undefined) updateData.portfolio = portfolio;
 
     const user = await User.findByIdAndUpdate(
       req.user.userId,

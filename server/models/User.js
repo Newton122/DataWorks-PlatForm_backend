@@ -68,6 +68,27 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  // Additional profile fields
+  experience: {
+    type: String,
+    default: '',
+  },
+  education: {
+    type: String,
+    default: '',
+  },
+  linkedin: {
+    type: String,
+    default: '',
+  },
+  github: {
+    type: String,
+    default: '',
+  },
+  portfolio: {
+    type: String,
+    default: '',
+  },
 });
 
 module.exports = mongoose.model('User', userSchema);
