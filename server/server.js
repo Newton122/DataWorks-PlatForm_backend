@@ -26,8 +26,23 @@ const server = http.createServer(app);
 // Socket.io setup
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL || "*",
+    origin: function(origin, callback) {
+      const allowedOrigins = [
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'http://localhost:4174',
+        'https://dataworks-platform.onrender.com',
+        'https://dataworks-platform.vercel.app'
+      ];
+      
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(null, true); // Allow all for now
+      }
+    },
     methods: ['GET', 'POST'],
+    credentials: true
   },
 });
 
@@ -56,8 +71,7 @@ app.use(cors({
 // Handle preflight requests
 app.options('*', (req, res) => {
   const origin = req.headers.origin;
-  // Temporarily allow all origins
-  res.header('Access-Control-Allow-Origin', origin || '*');
+  res.header('Access-Control-Allow-Origin', origin || 'https://dataworks-platform.vercel.app');
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
