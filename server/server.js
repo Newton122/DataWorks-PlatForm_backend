@@ -36,7 +36,8 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:3001',
   'http://localhost:4174',
-  'https://dataworks-platform.onrender.com'
+  'https://dataworks-platform.onrender.com',
+  'https://dataworks-platform.vercel.app'
 ];
 
 app.use(cors({
