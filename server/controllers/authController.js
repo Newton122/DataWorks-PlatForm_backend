@@ -9,6 +9,10 @@ const jwt = require('jsonwebtoken');
 exports.signup = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
+    
+    // Log received data for debugging
+    console.log('📝 Signup request - Name:', name, 'Email:', email, 'Role:', role || 'NOT PROVIDED');
+    
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -16,9 +20,16 @@ exports.signup = async (req, res) => {
     }
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
-    // Create user
-    const user = new User({ name, email, password: hashedPassword, role: role || 'freelancer' });
+    
+    // Create user with role - use provided role or default to 'freelancer'
+    const userRole = role && ['client', 'freelancer', 'admin', 'intern'].includes(role) ? role : 'freelancer';
+    console.log('✅ Creating user with role:', userRole);
+    
+    const user = new User({ name, email, password: hashedPassword, role: userRole });
     await user.save();
+    
+    console.log('✅ User created:', user.email, 'with role:', user.role);
+    
     // Generate JWT
     const token = jwt.sign(
       { userId: user._id, role: user.role },
@@ -27,7 +38,7 @@ exports.signup = async (req, res) => {
     );
     res.status(201).json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
   } catch (err) {
-    console.error('Signup error:', err);
+    console.error('❌ Signup error:', err);
     res.status(500).json({ message: err.message });
   }
 };
