@@ -52,10 +52,11 @@ const getMe = async (req, res) => {
 // Update user profile
 const updateProfile = async (req, res) => {
   try {
-    const { name, phone, location, bio, skills, hourlyRate, title } = req.body;
+    const { name, email, phone, location, bio, skills, hourlyRate, title } = req.body;
     
     const updateData = {};
     if (name) updateData.name = name;
+    if (email) updateData.email = email;
     if (phone !== undefined) updateData.phone = phone;
     if (location !== undefined) updateData.location = location;
     if (bio !== undefined) updateData.bio = bio;
